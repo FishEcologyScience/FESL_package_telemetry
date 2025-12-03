@@ -1,4 +1,12 @@
-.Rproj.user
+# R session files
+.Rproj.user/
 .Rhistory
 .RData
 .Ruserdata
+.RDataTmp*
+
+# Specific directories 
+# 01 - Data/
+# 04 - Outputs/
+CLAUDE.md
+/.Rproj.user
