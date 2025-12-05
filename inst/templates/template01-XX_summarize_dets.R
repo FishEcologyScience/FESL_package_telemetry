@@ -1,14 +1,53 @@
 ## --------------------------------------------------------------#
-## Script name: template01-02_summarize_dets
+## Template: template01-XX_summarize_dets
+## Title: Detection Data Summary and Quality Checks
 ##
-## Purpose of script:
-##    Summarize acoustic telemetry detection data
-##    - Calculate fish residency at stations
-##    - Generate individual-level summaries
-##    - Generate population-level summaries
-##    - Generate location-level summaries
-##    - Create visualization plots
+## Purpose:
+##    Comprehensive summary of acoustic telemetry detection data including
+##    residency calculations, individual/population/location summaries, and
+##    visualization plots.
 ##
+## --------------------------------------------------------------#
+## INPUTS:
+##   data_det - Detection dataframe with GLATOS-formatted columns
+##     Required columns:
+##       - animal_id: Fish identifier
+##       - station_no: Receiver station identifier
+##       - detection_timestamp_est: Detection timestamp (POSIXct)
+##       - deploy_lat: Receiver latitude (numeric)
+##       - deploy_long: Receiver longitude (numeric)
+##       - date: Detection date (Date)
+##     Optional columns:
+##       - transmitter_codespace: Transmitter manufacturer code
+##       - transmitter_id: Transmitter identification number
+##       - length: Fish length (mm)
+##
+## OUTPUTS:
+##   df_residency - Residency times by date, animal, and station
+##   df_individual_summary - Individual fish summaries (by date/station)
+##     Columns: date, animal_id, station_no, dets_fish_station, dets_fish,
+##              residence, deploy_lat, deploy_long, transmitter_codespace,
+##              transmitter_id, length
+##   df_population_summary - Population summaries (by date/station)
+##     Columns: date, station_no, deploy_lat, deploy_long, dets, dets_total,
+##              dets_prop, residence, residence_total, residence_prop,
+##              fish_count, fish_count_total, fish_count_prop
+##   df_location_summary - Location summaries (by station)
+##     Columns: station_no, deploy_lat, deploy_long, dets_sum, dets_prop,
+##              residence_mean, residence_sum
+##   plots - List containing visualization objects:
+##     $detections_by_fish - Ranked detections plot
+##     $durations_by_fish - Ranked duration plot
+##     $abacus - Spatiotemporal heatmap
+##
+## DEPENDENCIES:
+##   Required packages:
+##     - tidyverse (dplyr, ggplot2, forcats)
+##     - data.table
+##     - viridis
+##     - FESLtelemetry
+##
+## --------------------------------------------------------------#
 ## Author: [Your Name]
 ##
 ## Date Created: [Date]
@@ -18,16 +57,7 @@
 ##
 ## --------------------------------------------------------------#
 
-# NOTE: This template expects standardized column names from GLATOS data:
-#   - animal_id: Fish identifier
-#   - station_no: Receiver station identifier
-#   - detection_timestamp_est: Detection timestamp
-#   - deploy_lat: Receiver latitude
-#   - deploy_long: Receiver longitude
-#   - date: Detection date
-#   - transmitter_codespace, transmitter_id, length: Fish metadata
-#
-# EXAMPLE DATA: Load example data from FESLtelemetry package
+# Load example data from FESLtelemetry package
 #   data("example_data_raw_dets", package = "FESLtelemetry")
 #   data_det <- example_data_raw_dets
 #

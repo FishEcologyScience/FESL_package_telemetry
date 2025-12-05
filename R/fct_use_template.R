@@ -38,7 +38,7 @@ use_template <- function(template, output_dir = "02_scripts", overwrite = FALSE)
 
   # Map template names to file names
   template_files <- c(
-    summarize_dets = "template01-02_summarize_dets.R"
+    summarize_dets = "template01-XX_summarize_dets.R"
   )
 
   template_file <- template_files[[template]]
